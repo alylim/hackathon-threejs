@@ -1,35 +1,37 @@
 import { createFileRoute } from "@tanstack/react-router";
-import * as THREE from 'three';
+import { Canvas } from "@react-three/fiber";
+import { Cube } from "./-components/cube";
+import { AircraftMesh } from "./-components/aircraftMesh";
+import { FlyControls } from "@react-three/drei";
+import { type Vector3 } from "three";
+import { useEffect, useState } from "react";
+import tracksJson from './tracks.json';
+import { People } from "./-components/people";
 
 export const Route = createFileRoute("/hangar/")({
   component: Hangar,
 });
 
 function Hangar() {
-  const scene = new THREE.Scene();
-  const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+  const [people, setPeople] = useState([]);
+    useEffect(() => {
+      if (tracksJson.frames && tracksJson.frames.length > 0) {
+        setPeople(tracksJson.frames[0].worldCoordinates); // Load first frame
+      }
+      }, []);
 
-  const renderer = new THREE.WebGLRenderer();
-  renderer.setSize( window.innerWidth, window.innerHeight );
-  renderer.setAnimationLoop( animate );
-
-  const geometry = new THREE.BoxGeometry( 1, 1, 1 );
-  const material = new THREE.MeshBasicMaterial( { color: 0x00ff00 } );
-  const cube = new THREE.Mesh( geometry, material );
-  scene.add( cube );
-
-  camera.position.z = 5;
-
-  function animate() {
-
-    cube.rotation.x += 0.01;
-    cube.rotation.y += 0.01;
-
-    renderer.render( scene, camera );
-
-  }
-
-  // document.body.appendChild( renderer.domElement );
-
-  return <div className="p-2">Hello from Hangar!</div>
+  return (
+    <div id="canvas-container" style={{ width: "100vw", height: "100vh" }}>
+      <Canvas camera={{ position: [100, 20, 100], fov: 50 }}>
+        {/* <Cube/> */}
+        <AircraftMesh position={[0, 0, 0]} />
+        <ambientLight intensity={1} />
+        <directionalLight position={[5, 5, 5]} intensity={2} />
+        <FlyControls movementSpeed={40} rollSpeed={0.5} dragToLook={true} />
+        <People positions={people} />
+        <axesHelper args={[5]} />
+        <gridHelper args={[200, 200]} />
+      </Canvas>
+    </div>
+  );
 }
