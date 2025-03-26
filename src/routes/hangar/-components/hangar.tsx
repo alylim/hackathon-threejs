@@ -1,16 +1,23 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { AircraftMesh } from "./aircraftMesh";
 import { People } from "./people";
 import { useFrame } from "@react-three/fiber";
 
-function calculateDistance(coord1, coord2) {
-    const [x1, y1, z1] = coord1;
-    const [x2, y2, z2] = coord2;
-    return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2);
-  }
+type CartesianCoordinates = [number, number, number];
 
-export function Hangar({ tracks }) {
-  const [positions, setPositions] = useState([]);
+type Track = {
+  timestamp: number;
+  worldCoordinates: CartesianCoordinates[];
+};
+
+function calculateDistance(coord1: CartesianCoordinates, coord2: CartesianCoordinates) {
+  const [x1, y1, z1] = coord1;
+  const [x2, y2, z2] = coord2;
+  return Math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2 + (z2 - z1) ** 2);
+}
+
+export function Hangar({ tracks }: { tracks: Track[] }) {
+  const [positions, setPositions] = useState<CartesianCoordinates[]>([]);
   const startTimestamp = tracks[0].timestamp;
   const distanceThreshold = 2; // Threshold for considering a new person (2 meters)
 
@@ -32,7 +39,7 @@ export function Hangar({ tracks }) {
         const nextFrame = tracks[nextFrameIndex];
 
         // Handle positions by matching the number of people across frames
-        const updatedPositions = [];
+        const updatedPositions = [] as CartesianCoordinates[];
 
         const currentCoords = currentFrame.worldCoordinates;
         const nextCoords = nextFrame.worldCoordinates;
