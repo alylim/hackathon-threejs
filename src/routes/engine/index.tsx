@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { Canvas } from "@react-three/fiber";
-import { Cylinder } from "./-components/cylinder";
+import { Cylinder } from "./-components/rotating-cylinder";
 import { OrbitControls } from "@react-three/drei";
 import { Color } from "three";
 
@@ -16,6 +16,9 @@ function Engine() {
 
   return (
     <div id="canvas-container" style={{ width: "100dvw", height: "100dvh" }}>
+      <button>
+        <Link to="/engine/ultimate">To the finale</Link>
+      </button>
       <Canvas
         scene={{ background: BLACK }}
         camera={{ fov: 75, near: 0.1, far: 500 }}
@@ -26,6 +29,7 @@ function Engine() {
         <directionalLight color="white" position={[0, 10, 0]} intensity={5} />
         <OrbitControls />
         <Cylinder color="#ae34eb" isDragging={isDragging} />
+        <axesHelper args={[5]} />
       </Canvas>
     </div>
   );
