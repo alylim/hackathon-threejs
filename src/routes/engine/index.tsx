@@ -1,20 +1,31 @@
+import { useState } from "react";
 import { createFileRoute } from "@tanstack/react-router";
 import { Canvas } from "@react-three/fiber";
-import { PhongedCube } from "./-components/phonged-cube";
+import { Cylinder } from "./-components/cylinder";
+import { OrbitControls } from "@react-three/drei";
+import { Color } from "three";
 
 export const Route = createFileRoute("/engine/")({
   component: Engine,
 });
 
+const BLACK = new Color("black");
+
 function Engine() {
+  const [isDragging, setIsDragging] = useState(false);
+
   return (
-    <div id="canvas-container">
-      <Canvas camera={{ fov: 75, near: 0.1, far: 5 }}>
-        <ambientLight intensity={0.1} />
-        <directionalLight color="white" position={[0, 0, 5]} intensity={3} />
-        <PhongedCube transposeX={0} color="royalBlue" />
-        <PhongedCube transposeX={4} color="green" />
-        <PhongedCube transposeX={-4} color="red" />
+    <div id="canvas-container" style={{ width: "100dvw", height: "100dvh" }}>
+      <Canvas
+        scene={{ background: BLACK }}
+        camera={{ fov: 75, near: 0.1, far: 500 }}
+        onPointerDown={() => setIsDragging(true)}
+        onPointerUp={() => setIsDragging(false)}
+      >
+        <ambientLight intensity={0.7} />
+        <directionalLight color="white" position={[0, 10, 0]} intensity={5} />
+        <OrbitControls />
+        <Cylinder color="#ae34eb" isDragging={isDragging} />
       </Canvas>
     </div>
   );
