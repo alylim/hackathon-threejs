@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Canvas } from "@react-three/fiber";
-import { PhongedCube } from "./_components/phonged-cube";
+import { PhongedCube } from "./-components/phonged-cube";
 
 export const Route = createFileRoute("/engine/")({
   component: Engine,
