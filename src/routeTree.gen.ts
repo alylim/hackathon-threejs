@@ -12,8 +12,8 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as EngineImport } from './routes/engine'
-import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
+import { Route as HangarIndexImport } from './routes/hangar/index'
 
 // Create/Update Routes
 
@@ -23,15 +23,15 @@ const EngineRoute = EngineImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const AboutRoute = AboutImport.update({
-  id: '/about',
-  path: '/about',
-  getParentRoute: () => rootRoute,
-} as any)
-
 const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const HangarIndexRoute = HangarIndexImport.update({
+  id: '/hangar/',
+  path: '/hangar/',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -46,18 +46,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/about': {
-      id: '/about'
-      path: '/about'
-      fullPath: '/about'
-      preLoaderRoute: typeof AboutImport
-      parentRoute: typeof rootRoute
-    }
     '/engine': {
       id: '/engine'
       path: '/engine'
       fullPath: '/engine'
       preLoaderRoute: typeof EngineImport
+      parentRoute: typeof rootRoute
+    }
+    '/hangar/': {
+      id: '/hangar/'
+      path: '/hangar'
+      fullPath: '/hangar'
+      preLoaderRoute: typeof HangarIndexImport
       parentRoute: typeof rootRoute
     }
   }
@@ -67,42 +67,42 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/engine': typeof EngineRoute
+  '/hangar': typeof HangarIndexRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/engine': typeof EngineRoute
+  '/hangar': typeof HangarIndexRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/about': typeof AboutRoute
   '/engine': typeof EngineRoute
+  '/hangar/': typeof HangarIndexRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/engine'
+  fullPaths: '/' | '/engine' | '/hangar'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/engine'
-  id: '__root__' | '/' | '/about' | '/engine'
+  to: '/' | '/engine' | '/hangar'
+  id: '__root__' | '/' | '/engine' | '/hangar/'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  AboutRoute: typeof AboutRoute
   EngineRoute: typeof EngineRoute
+  HangarIndexRoute: typeof HangarIndexRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  AboutRoute: AboutRoute,
   EngineRoute: EngineRoute,
+  HangarIndexRoute: HangarIndexRoute,
 }
 
 export const routeTree = rootRoute
@@ -116,18 +116,18 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/about",
-        "/engine"
+        "/engine",
+        "/hangar/"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/about": {
-      "filePath": "about.tsx"
-    },
     "/engine": {
       "filePath": "engine.tsx"
+    },
+    "/hangar/": {
+      "filePath": "hangar/index.tsx"
     }
   }
 }
