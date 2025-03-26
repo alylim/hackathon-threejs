@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { type Mesh, type Clock } from "three";
+import { useRef } from "react";
+import { type Mesh } from "three";
 import { useFrame } from "@react-three/fiber";
 
 type CylinderProps = {

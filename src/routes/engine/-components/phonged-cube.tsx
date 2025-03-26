@@ -1,25 +1,39 @@
-import { useRef } from "react";
-import { type Mesh, type Clock } from "three";
-import { useFrame } from "@react-three/fiber";
+import { useRef, useState } from "react";
+import type { BoxGeometry, Mesh } from "three";
+import { Html } from "@react-three/drei";
+
+type BoxGeometryArgs = ConstructorParameters<typeof BoxGeometry>;
 
 type PhongedCubeProps = {
-  transposeX: number;
   color: string;
-};
+  boxGeometryArgs: BoxGeometryArgs;
+  label: string;
+} & React.ComponentProps<"mesh">;
 
-function PhongedCube({ transposeX, color }: PhongedCubeProps) {
+function PhongedCube({ position, boxGeometryArgs, color, label }: PhongedCubeProps) {
   const meshRef = useRef<Mesh>(null);
 
-  useFrame(({ clock }: { clock: Clock }) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = Math.sin(clock.elapsedTime);
-    }
-  });
+  const [isHovering, setIsHovering] = useState(false);
 
   return (
-    <mesh ref={meshRef} position={[transposeX, 0, 0]}>
-      <boxGeometry args={[3, 3, 3]} />
+    <mesh
+      ref={meshRef}
+      position={position}
+      onPointerOver={() => setIsHovering(true)}
+      onPointerOut={() => setIsHovering(false)}
+    >
+      <boxGeometry args={boxGeometryArgs} />
       <meshPhongMaterial color={color} />
+
+      {isHovering && label && (
+        <Html position={[0, 0.5, 0]} center>
+          <div
+            style={{ background: "black", color: "white", padding: "4px 8px", borderRadius: "4px" }}
+          >
+            {label}
+          </div>
+        </Html>
+      )}
     </mesh>
   );
 }
