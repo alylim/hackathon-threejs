@@ -11,16 +11,15 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as HangerImport } from './routes/hanger'
+import { Route as EngineImport } from './routes/engine'
 import { Route as AboutImport } from './routes/about'
 import { Route as IndexImport } from './routes/index'
-import { Route as HangerIndexImport } from './routes/hanger/index'
 
 // Create/Update Routes
 
-const HangerRoute = HangerImport.update({
-  id: '/hanger',
-  path: '/hanger',
+const EngineRoute = EngineImport.update({
+  id: '/engine',
+  path: '/engine',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -34,12 +33,6 @@ const IndexRoute = IndexImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRoute,
-} as any)
-
-const HangerIndexRoute = HangerIndexImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => HangerRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -60,76 +53,56 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AboutImport
       parentRoute: typeof rootRoute
     }
-    '/hanger': {
-      id: '/hanger'
-      path: '/hanger'
-      fullPath: '/hanger'
-      preLoaderRoute: typeof HangerImport
+    '/engine': {
+      id: '/engine'
+      path: '/engine'
+      fullPath: '/engine'
+      preLoaderRoute: typeof EngineImport
       parentRoute: typeof rootRoute
-    }
-    '/hanger/': {
-      id: '/hanger/'
-      path: '/'
-      fullPath: '/hanger/'
-      preLoaderRoute: typeof HangerIndexImport
-      parentRoute: typeof HangerImport
     }
   }
 }
 
 // Create and export the route tree
 
-interface HangerRouteChildren {
-  HangerIndexRoute: typeof HangerIndexRoute
-}
-
-const HangerRouteChildren: HangerRouteChildren = {
-  HangerIndexRoute: HangerIndexRoute,
-}
-
-const HangerRouteWithChildren =
-  HangerRoute._addFileChildren(HangerRouteChildren)
-
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/hanger': typeof HangerRouteWithChildren
-  '/hanger/': typeof HangerIndexRoute
+  '/engine': typeof EngineRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/hanger': typeof HangerIndexRoute
+  '/engine': typeof EngineRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/hanger': typeof HangerRouteWithChildren
-  '/hanger/': typeof HangerIndexRoute
+  '/engine': typeof EngineRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about' | '/hanger' | '/hanger/'
+  fullPaths: '/' | '/about' | '/engine'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about' | '/hanger'
-  id: '__root__' | '/' | '/about' | '/hanger' | '/hanger/'
+  to: '/' | '/about' | '/engine'
+  id: '__root__' | '/' | '/about' | '/engine'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  HangerRoute: typeof HangerRouteWithChildren
+  EngineRoute: typeof EngineRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  HangerRoute: HangerRouteWithChildren,
+  EngineRoute: EngineRoute,
 }
 
 export const routeTree = rootRoute
@@ -144,7 +117,7 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/about",
-        "/hanger"
+        "/engine"
       ]
     },
     "/": {
@@ -153,15 +126,8 @@ export const routeTree = rootRoute
     "/about": {
       "filePath": "about.tsx"
     },
-    "/hanger": {
-      "filePath": "hanger.tsx",
-      "children": [
-        "/hanger/"
-      ]
-    },
-    "/hanger/": {
-      "filePath": "hanger/index.tsx",
-      "parent": "/hanger"
+    "/engine": {
+      "filePath": "engine.tsx"
     }
   }
 }
