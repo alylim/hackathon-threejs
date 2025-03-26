@@ -2,7 +2,7 @@ import { Canvas, useThree } from "@react-three/fiber";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Color } from "three";
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import { FakeEngine } from "./-components/fake-engine";
 import { PhongedCube } from "./-components/phonged-cube";
 
@@ -55,11 +55,10 @@ function Ultimate() {
         <axesHelper args={[5]} />
       </Canvas>
 
-      <div style={{ position: "absolute", top: 20, left: 20 }}>
+      <div style={{ position: "absolute", top: 60, left: 20 }}>
         <button onClick={() => setActiveTarget([-0.5, -0.5, -0.6])}>Oil Tank</button>
         <button onClick={() => setActiveTarget([2, 0.1, 0.1])}>EEC 1A Elec Harness</button>
         <button onClick={() => setActiveTarget([0.1, 1, 1])}>EEC</button>
-        <button onClick={() => setActiveTarget(null)}>Default View</button>
       </div>
     </div>
   );
